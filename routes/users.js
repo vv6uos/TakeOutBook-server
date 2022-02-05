@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/register", (req, res) => {
   const body = req.body;
   const { user_id, password, user_name, email, address, phoneNumber } = body;
   models.User.create({
@@ -35,9 +35,29 @@ router.post("/", (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(err);
-      res.send("유저정보 등록 실패 ");
+      console.log("유저정보 등록 실패 ", err);
+      res.send({
+        err,
+      });
     });
 });
+router.post("/login", (req, res) => {
+  const body = req.body;
+  const { user_id, password } = body;
 
+  models.User.findOne({
+    where: {
+      user_id,
+      password,
+    },
+  })
+    .then((result) => {
+      console.log("로그인 회원정보", result.dataValues);
+      res.send("로그인 검색");
+    })
+    .catch((err) => {
+      console.log("일치하는 UserData 없음", err);
+      res.send("아이디와 비밀번호를 확인 부탁드립니다.");
+    });
+});
 module.exports = router;
