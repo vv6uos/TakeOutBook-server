@@ -2,22 +2,7 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 
-router.get("/", (req, res) => {
-  models.User.findAll({
-    order: [["id"]],
-    attributes: ["id", "user_id", "password"],
-  })
-    .then((result) => {
-      console.log("모든user정보 전달", result);
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send("users DB를 불러오는데 실패했습니다.");
-    });
-});
-
-router.post("/register", (req, res) => {
+router.post("/", (req, res) => {
   const body = req.body;
   const { user_id, password, user_name, email, address, phoneNumber } = body;
   models.User.create({
@@ -41,23 +26,22 @@ router.post("/register", (req, res) => {
       });
     });
 });
-router.post("/login", (req, res) => {
+router.post("/checkId", (req, res) => {
   const body = req.body;
-  const { user_id, password } = body;
-
+  const { user_id } = body;
   models.User.findOne({
     where: {
       user_id,
-      password,
     },
   })
     .then((result) => {
-      console.log("로그인 회원정보", result.dataValues);
-      res.send("로그인 검색");
+      console.log("회원가입 아이디 중복확인", result.dataValues);
+      res.send(false);
     })
     .catch((err) => {
-      console.log("일치하는 UserData 없음", err);
-      res.send("아이디와 비밀번호를 확인 부탁드립니다.");
+      console.log("일치하는 ID 없음", err);
+      res.send(true);
     });
 });
+
 module.exports = router;

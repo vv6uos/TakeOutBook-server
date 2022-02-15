@@ -5,9 +5,12 @@ const app = express();
 const port = 8080;
 const models = require("./models");
 const router = require("./routes/index");
-
+const corsOpt = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOpt));
 
 app.use(router);
 
