@@ -29,12 +29,12 @@ router.post("/login", (req, res) => {
 
       console.log("SESSION.LOGINDATA", req.session);
       req.session.save(() => {
-        res.send({ isLoginIn: true, User: req.session.loginData });
+        res.send({ isLogin: true, User: req.session.loginData });
       });
     })
     .catch((err) => {
       console.log("일치하는 UserData 없음", err);
-      res.send({ isLoginIn: false });
+      res.send({ isLogin: false });
     });
 });
 
