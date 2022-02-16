@@ -18,11 +18,6 @@ module.exports = function (sequelize, DataTypes) {
     imgURL: {
       type: DataTypes.STRING(500),
     },
-
-    address: {
-      field: "address",
-      type: DataTypes.STRING(30),
-    },
   });
   return book;
 };

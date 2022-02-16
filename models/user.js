@@ -4,13 +4,13 @@ module.exports = function (sequelize, DataTypes) {
     {
       user_id: {
         filed: "user_id",
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING(15),
         unique: true,
         allowNull: false,
       },
       password: {
         field: "password",
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING(15),
         allowNull: false,
       },
       user_name: {
