@@ -47,11 +47,14 @@ router.get("/loginCheck", (req, res) => {
     res.send({ loggedIn: false });
   }
 });
-router.get("/logOut", (req, res) => {
-  if (session.loginData) {
-    res.json({ loggedIn: true, loginData: session.loginData });
+router.get("/logout", (req, res) => {
+  if (req.session.loginData) {
+    console.log("로그아웃......", req.session.loginData.user_id);
+    req.session.destroy(() => {
+      res.json({ loggedOut: true });
+    });
   } else {
-    res.send({ loggedIn: false });
+    res.send({ loggedOut: false });
   }
 });
 
