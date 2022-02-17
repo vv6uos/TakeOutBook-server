@@ -30,11 +30,17 @@ module.exports = function (sequelize, DataTypes) {
         field: "phoneNumber",
         type: DataTypes.STRING(20),
       },
+      subscribe: {
+        field: "subscribe",
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       underscored: true,
       freezeTableName: true,
-      tableName: "users",
+      tableName: "Users",
     }
   );
   return user;
