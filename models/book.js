@@ -1,23 +1,37 @@
 module.exports = function (sequelize, DataTypes) {
-  const book = sequelize.define("Book", {
-    name: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
+  const book = sequelize.define(
+    "Book",
+    {
+      name: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
+      imgURL: {
+        type: DataTypes.STRING(500),
+      },
+      rentOn: {
+        field: "rentOn",
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      author: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
+      },
+      publisher: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING(1000),
+      },
     },
-    seller: {
-      type: DataTypes.STRING(10),
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.INTEGER(15),
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING(1000),
-    },
-    imgURL: {
-      type: DataTypes.STRING(500),
-    },
-  });
+    {
+      timestamps: true,
+      underscored: true,
+    }
+  );
+
   return book;
 };
