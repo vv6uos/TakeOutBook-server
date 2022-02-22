@@ -1,20 +1,23 @@
 const express = require("express");
+const axios = require("axios");
 const router = express.Router();
 const models = require("../models");
 
+const ALADIN_URL =
+  "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbwanamzz1755003&QueryType=Bestseller&MaxResults=5&start=1&SearchTarget=Book&output=js&Version=20131101";
+const getBestSellers = async (request) => {
+  let response;
+  try {
+    response = axios.get(ALADIN_URL);
+  } catch (err) {
+    console.log("/aladin API AXIOS ERROR");
+  }
+  return response;
+};
 router.get("/", (req, res) => {
-  models.Book.findAll({
-    order: [["id"]],
-    attributes: ["id", "name", "imgURL"],
-  })
-    .then((result) => {
-      console.log("베스트셀러 데이터 전달");
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send("베스트셀러상품을 리스트 하는 중 오류가 발생했습니다.");
-    });
+  getBestSellers(req).then((result) => {
+    res.json(result.data.item);
+  });
 });
 
 module.exports = router;
