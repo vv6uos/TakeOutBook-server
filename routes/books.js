@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 
+//BookDB 대여가능 순으로 정렬해서 클라에 전달
 router.get("/", (req, res) => {
   models.Book.findAll({
-    order: [["id"]],
-    attributes: ["id", "name", "seller", "price", "createdAt", "imgURL"],
+    order: [["onRent"]],
+    attributes: ["id", "name", "author", "publisher", "imgURL", "onRent"],
   })
     .then((result) => {
       console.log("도서판매상품 데이터 전달");
