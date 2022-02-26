@@ -9,11 +9,12 @@ module.exports = function (sequelize, DataTypes) {
       imgURL: {
         type: DataTypes.STRING(500),
       },
-      rentOn: {
-        field: "rentOn",
+      onRent: {
+        field: "onRent",
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        defaultValue: false,
+        comment: "렌트중인지 아닌지 알수있음",
       },
       author: {
         type: DataTypes.STRING(30),

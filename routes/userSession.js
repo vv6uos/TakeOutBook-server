@@ -30,7 +30,7 @@ router.post("/create", (req, res) => {
         isLogin: true,
         id: member.id,
         name: member.user_name,
-        subscribe: member.subscribe,
+        isSubscriber: member.isSubscriber,
       };
 
       console.log("SESSION.LOGINDATA", req.session);
@@ -57,7 +57,7 @@ router.get("/", (req, res) => {
           isLogin: true,
           id: req.session.member.id,
           name: member.user_name,
-          subscribe: member.subscribe,
+          isSubscriber: member.isSubscriber,
         };
         console.log("userSession :", req.session);
         req.session.save(() => {

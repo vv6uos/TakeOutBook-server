@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
       res.send("상품을 리스트 하는 중 오류가 발생했습니다.");
     });
 });
-
+//id가 일치하는 Book 데이터 클라에 전달
 router.get("/:id", (req, res) => {
   const params = req.params;
   const { id } = params;
@@ -33,6 +33,21 @@ router.get("/:id", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.send("상품 데이터를 받는 중 오류가 발생했습니다.");
+    });
+});
+
+//id가 일치하는 Book 의 onRent: true 변경
+router.get("/:id/changeRentStatus", (req, res) => {
+  const params = req.params;
+  const { id } = params;
+  models.Book.update({ onRent: true }, { where: { id } })
+    .then((result) => {
+      console.log("/book(", id, ") onRent 변경 SUCCESS ");
+      res.send(true);
+    })
+    .catch((err) => {
+      console.log("/book(", id, ")onRent 변경 ERROR", err);
+      res.send(false);
     });
 });
 

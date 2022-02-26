@@ -30,8 +30,8 @@ module.exports = function (sequelize, DataTypes) {
         field: "phoneNumber",
         type: DataTypes.STRING(20),
       },
-      subscribe: {
-        field: "subscribe",
+      isSubscriber: {
+        field: "isSubscriber",
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
