@@ -1,7 +1,6 @@
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
-const models = require("../models");
 
 const ALADIN_URL =
   "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbwanamzz1755003&QueryType=Bestseller&MaxResults=5&start=1&SearchTarget=Book&Cover=Big&CategoryId=7396&output=js&Version=20131101";
