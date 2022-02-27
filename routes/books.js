@@ -36,17 +36,32 @@ router.get("/:id", (req, res) => {
     });
 });
 
-//id가 일치하는 Book 의 onRent: true 변경
-router.get("/:id/changeRentStatus", (req, res) => {
-  const params = req.params;
-  const { id } = params;
-  models.Book.update({ onRent: true }, { where: { id } })
+//id가 일치하는 Book 의 onRent: true 변경, userBook데이터 생성
+router.post("/:id/rent", (req, res) => {
+  //params에서 bookId를 받아온다
+  models.Book.update({ onRent: true }, { where: { id: req.params.id } })
     .then((result) => {
-      console.log("/book(", id, ") onRent 변경 SUCCESS ");
-      res.send(true);
+      const now = Date.now();
+      //사용자가 보내온 memberId를 이용해서 userBook 데이터 생성
+      models.UserBook.create({
+        rentAt: new Date(now),
+        rentBy: new Date(now + 7 * 24 * 60 * 60 * 1000),
+        fk_user_id: req.body.memberId,
+        fk_book_id: req.params.id,
+      })
+        //결과 클라이언트에 전달
+        .then((result) => {
+          console.log("/book(", req.params.id, ") onRent 변경 SUCCESS ");
+          console.log("userBook Data create : ", result);
+          res.send(true);
+        })
+        .catch((err) => {
+          console.log("userBook Data create ERR", err);
+          res.send(false);
+        });
     })
     .catch((err) => {
-      console.log("/book(", id, ")onRent 변경 ERROR", err);
+      console.log("/book(", bookId, ")onRent 변경 ERROR", err);
       res.send(false);
     });
 });

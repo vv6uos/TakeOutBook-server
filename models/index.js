@@ -50,8 +50,8 @@ db.userBook = require("./userBooks")(sequelize, Sequelize);
 db.user.belongsToMany(db.book, {
   through: db.userBook,
   as: "ReadBooks",
-  foreignKey: "fk_userId",
-  otherKey: "fk_bookId",
+  foreignKey: "fk_user_id",
+  otherKey: "fk_book_id",
   onDelete: "cascade",
 });
 // db.book.belongsToMany(db.user, {
