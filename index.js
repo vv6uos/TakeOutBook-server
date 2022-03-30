@@ -1,11 +1,28 @@
-var http = require("http"); // node 내장 모듈 불러옴
-var hostname = "127.0.0.1"; // localhost와 동일
-var port = 8080;
-http
-  .createServer(function (req, res) {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Hello s6uos");
-  })
-  .listen(port, hostname);
+const express = require("express");
+const cors = require("cors");
+const app = express();
 
-console.log("Server running at http://" + hostname + ":" + port);
+const port = process.env.PORT || 8080;
+const models = require("./models");
+const router = require("./routes/index");
+const corsOpt = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
+app.use(express.json());
+app.use(cors(corsOpt));
+
+app.use(router);
+
+app.listen(port, () => {
+  console.log(`서버가 돌아갑니다`);
+  models.sequelize
+    .sync()
+    .then(() => {
+      console.log("DB연결성공");
+    })
+    .catch((err) => {
+      console.log("DB연결실패", err);
+      process.exit();
+    });
+});
