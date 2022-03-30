@@ -6,7 +6,7 @@ const port = process.env.PORT || 8080;
 const models = require("./models");
 const router = require("./routes/index");
 const corsOpt = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://takeoutbook.netlify.app"],
   credentials: true,
 };
 app.use(express.json());
