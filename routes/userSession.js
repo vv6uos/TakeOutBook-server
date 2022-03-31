@@ -11,7 +11,7 @@ router.use(
     resave: false,
     saveUninitialized: false,
 
-    cookie: { secure: false, maxAge: 60 * 60 * 1000 },
+    cookie: { samesite: "none", secure: true, maxAge: 60 * 60 * 1000 },
   })
 );
 router.use(cookieParser());
@@ -38,7 +38,7 @@ router.post("/create", (req, res) => {
 
       console.log("SESSION.LOGINDATA", req.session);
       req.session.save(() => {
-        res.send({ user: req.session.member });
+        res.json({ user: req.session.member });
       });
     })
     .catch((err) => {
@@ -48,13 +48,18 @@ router.post("/create", (req, res) => {
 });
 
 router.get("/", (req, res) => {
+  console.log("session test : 지금 usersession 시작");
   if (req.session.member) {
+    console.log("session test : 세션있으면 User 찾아라 ");
     models.User.findOne({
       where: {
         id: req.session.member.id,
       },
     })
       .then((result) => {
+        console.log(
+          "session test : 세션이랑 일치하는 아이디 찾았으면 세션 업데이트해! "
+        );
         const member = result.dataValues;
         req.session.member = {
           isLogin: true,

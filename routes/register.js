@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
   })
     .then((result) => {
       console.log("회원정보등록결과 : ", result);
-      res.send({
+      res.json({
         result,
       });
     })
