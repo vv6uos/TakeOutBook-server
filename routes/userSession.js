@@ -4,16 +4,21 @@ const models = require("../models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
+//set-cookie 안보임 현상 방지
+router.set("trust proxy", 1);
 router.use(
   session({
     key: "member",
     secret: "semkSecret",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 60 * 60 * 1000 },
+    //도메인이 일치하지 않아도 session받을 수 있게 처리
+    cookie: { sameSite: "none", secure: true, maxAge: 60 * 60 * 1000 },
   })
 );
 router.use(cookieParser());
+
+//로그인한 유저 정보를 받아와 session 생성 
 router.post("/create", (req, res) => {
   const body = req.body;
   const { user_id, password } = body;
