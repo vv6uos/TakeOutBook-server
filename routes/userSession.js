@@ -4,15 +4,14 @@ const models = require("../models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
-//set-cookie 안보임 현상 방지
 router.use(
   session({
     key: "member",
-    secret: "semkSecret",
+    secret: "testsecret",
     resave: false,
-    saveUninitialized: true,
-    //도메인이 일치하지 않아도 session받을 수 있게 처리
-    cookie: { sameSite: "none", secure: true, maxAge: 60 * 60 * 1000 },
+    saveUninitialized: false,
+
+    cookie: { secure: false, maxAge: 60 * 60 * 1000 },
   })
 );
 router.use(cookieParser());
