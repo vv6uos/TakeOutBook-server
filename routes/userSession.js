@@ -5,7 +5,6 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
 //set-cookie 안보임 현상 방지
-router.set("trust proxy", 1);
 router.use(
   session({
     key: "member",
@@ -18,7 +17,7 @@ router.use(
 );
 router.use(cookieParser());
 
-//로그인한 유저 정보를 받아와 session 생성 
+//로그인한 유저 정보를 받아와 session 생성
 router.post("/create", (req, res) => {
   const body = req.body;
   const { user_id, password } = body;
