@@ -3,6 +3,7 @@ const router = express.Router();
 const models = require("../models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const prod = process.env.NODE_ENV === "production";
 
 router.use(
   session({
@@ -13,8 +14,11 @@ router.use(
 
     cookie: {
       httpOnly: true,
-      secure: false,
-      domain: process.env.NODE_ENV === "production" && ".takeoutbook.kr",
+      //로컬환경에서 설정이 안먹힘
+      // sameSite: "none",
+      samesite: none,
+      secure: true,
+      domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
     },
   })
@@ -53,8 +57,8 @@ router.post("/create", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  console.log("session test : 지금 usersession 시작", req.session);
-  if (req.session.member) {
+  console.log("session test : 지금 usersession 시작");
+  if (req.session.member.isLogin) {
     console.log("session test : 세션있으면 User 찾아라 ");
     models.User.findOne({
       where: {
@@ -80,7 +84,7 @@ router.get("/", (req, res) => {
       .catch((err) => {
         console.log("/userSession NOT FOUND ID ");
       });
-  }
+  } else console.log("No req.session.member ");
 });
 
 router.get("/delete", (req, res) => {
