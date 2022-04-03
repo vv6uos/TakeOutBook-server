@@ -11,7 +11,15 @@ router.use(
     resave: false,
     saveUninitialized: false,
 
-    cookie: { samesite: "none", secure: true, maxAge: 60 * 60 * 1000 },
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? ".takeoutbook.kr"
+          : "http://localhost:8080",
+      maxAge: 60 * 60 * 1000,
+    },
   })
 );
 router.use(cookieParser());
