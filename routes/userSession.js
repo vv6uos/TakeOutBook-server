@@ -53,7 +53,7 @@ router.post("/create", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  console.log("session test : 지금 usersession 시작");
+  console.log("session test : 지금 usersession 시작", req.session);
   if (req.session.member) {
     console.log("session test : 세션있으면 User 찾아라 ");
     models.User.findOne({
