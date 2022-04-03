@@ -6,7 +6,7 @@ const port = process.env.PORT || 8080;
 const models = require("./models");
 const router = require("./routes/index");
 const corsOpt = {
-  origin: true,
+  origin: ["http://localhost:3000", "http://takeoutbook.kr"],
   credentials: true,
 };
 app.use(express.json());
