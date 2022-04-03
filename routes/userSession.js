@@ -16,7 +16,7 @@ router.use(
       httpOnly: true,
       //로컬환경에서 설정이 안먹힘
       // sameSite: "none",
-      samesite: none,
+      samesite: "none",
       secure: true,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
