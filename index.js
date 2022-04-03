@@ -8,7 +8,7 @@ const router = require("./routes/index");
 const prod = process.env.NODE_ENV === "production";
 
 const corsOpt = {
-  origin: prod ? "http://takeoutbook.kr" : "http://localhost:3000",
+  origin: prod ? "https://takeoutbook.kr" : "http://localhost:3000",
   credentials: true,
 };
 app.use(express.json());
