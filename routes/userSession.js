@@ -13,11 +13,10 @@ router.use(
     saveUninitialized: false,
 
     cookie: {
-      httpOnly: true,
-      //로컬환경에서 설정이 안먹힘
-      // sameSite: "none",
-      samesite: "none",
-      secure: true,
+      // httpOnly: true,
+      //HTTP 통신에서 javascript를 주입해서 쿠키의 정보를 얻으려 하는경우 탈취 X
+      // samesite: "none",
+      secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
     },
@@ -58,7 +57,7 @@ router.post("/create", (req, res) => {
 
 router.get("/", (req, res) => {
   console.log("session test : 지금 usersession 시작");
-  if (req.session.member.isLogin) {
+  if (req.session.member) {
     console.log("session test : 세션있으면 User 찾아라 ");
     models.User.findOne({
       where: {
