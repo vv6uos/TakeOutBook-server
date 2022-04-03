@@ -5,8 +5,10 @@ const app = express();
 const port = process.env.PORT || 8080;
 const models = require("./models");
 const router = require("./routes/index");
+const prod = process.env.NODE_ENV === "production";
+
 const corsOpt = {
-  origin: ["http://localhost:3000", "http://takeoutbook.kr"],
+  origin: prod ? "http://takeoutbook.kr" : "http://localhost:3000",
   credentials: true,
 };
 app.use(express.json());

@@ -7,17 +7,14 @@ const cookieParser = require("cookie-parser");
 router.use(
   session({
     key: "member",
-    secret: "testsecret",
+    secret: "aaaserret",
     resave: false,
     saveUninitialized: false,
 
     cookie: {
       httpOnly: true,
-      secure: true,
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".takeoutbook.kr"
-          : "http://localhost:8080",
+      secure: false,
+      domain: process.env.NODE_ENV === "production" && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
     },
   })
