@@ -12,11 +12,12 @@ router.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      samesite: "none",
+      // samesite: "none",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
     },
+    store: new RedisStore(redisStoreInfo),
   })
 );
 router.use(cookieParser());
