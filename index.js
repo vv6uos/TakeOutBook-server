@@ -6,8 +6,15 @@ const port = process.env.PORT || 8080;
 const models = require("./models");
 const router = require("./routes/index");
 
+const whiteList = ["https://takeoutbook.kr", "http://localhost:3000"];
 const corsOpt = {
-  origin: ["https://takeoutbook.kr" ,"http://localhost:3000"],
+  origin: function (origin, cb) {
+    if ((whiteList, indexOf(origin) !== -1)) {
+      cb(null, true);
+    } else {
+      cb(new Error("NOT Allowed ORIGIN"));
+    }
+  },
   credentials: true,
 };
 app.use(express.json());
