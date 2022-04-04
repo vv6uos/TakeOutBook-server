@@ -28,6 +28,7 @@ router.use(cookieParser());
 router.post("/create", (req, res) => {
   const body = req.body;
   const { user_id, password } = body;
+  console.log("TEST: 로그인정보 전달 했나? ", body);
   models.User.findOne({
     where: {
       user_id,

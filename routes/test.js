@@ -1,12 +1,34 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
+const models = require("../models");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const prod = process.env.NODE_ENV === "production";
 
-const URL = "http://localhost:8080/userSession/get";
+router.use(
+  session({
+    key: "TBOsession",
+    secret: "aaaserret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      samesite: "none",
+      secure: prod ? true : false,
+      domain: prod && ".takeoutbook.kr",
+      maxAge: 60 * 60 * 1000,
+    },
+  })
+);
+router.use(cookieParser());
 
 router.get("/", (req, res) => {
-  axios.get(URL).then((result) => {
-    res.send("실행중 ", result);
+  req.session.TBOsession = {
+    result: "결과",
+  };
+
+  req.session.save(() => {
+    res.json({ msg: "=>세션저장완료", session: req.session.TBOsession });
   });
 });
+
 module.exports = router;
