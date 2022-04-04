@@ -25,7 +25,7 @@ router.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      samesite: "none",
+      sameSite: "none",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
