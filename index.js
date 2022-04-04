@@ -7,9 +7,10 @@ const models = require("./models");
 const router = require("./routes/index");
 
 const whiteList = ["https://takeoutbook.kr", "http://localhost:3000"];
+
 const corsOpt = {
   origin: function (origin, cb) {
-    if ((whiteList, indexOf(origin) !== -1)) {
+    if (whiteList.indexOf(origin) !== -1) {
       cb(null, true);
     } else {
       cb(new Error("NOT Allowed ORIGIN"));
