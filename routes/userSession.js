@@ -10,12 +10,12 @@ router.use(
     key: "member",
     secret: "aaaserret",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
 
     cookie: {
       // httpOnly: true,
       //HTTP 통신에서 javascript를 주입해서 쿠키의 정보를 얻으려 하는경우 탈취 X
-      // samesite: "none",
+      samesite: "none",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
