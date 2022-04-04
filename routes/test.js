@@ -17,7 +17,7 @@ router.use(
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
     },
-    store: new RedisStore(redisStoreInfo),
+    // store: new RedisStore(redisStoreInfo),
   })
 );
 router.use(cookieParser());
