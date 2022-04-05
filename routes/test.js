@@ -22,9 +22,10 @@ router.use(
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     // store: new RedisStore({ client: redisClient }),
     cookie: {
-      samesite: "none",
+      sameSite: "strict",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
@@ -74,8 +75,8 @@ router.post("/findUser", (req, res) => {
     },
   })
     .then((result) => {
-      console.log("FIND USER TEST", result);
-      res.json({ msg: "FindUser post결과값", result });
+      console.log("FIND USER TEST", result.dataValues);
+      res.json({ msg: "FindUser post결과값", result: result.dataValues });
     })
     .catch((err) => {
       console.log("일치하는 UserData 없음", err);

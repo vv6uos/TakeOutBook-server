@@ -10,17 +10,18 @@ dotenv.config();
 const prod = process.env.NODE_ENV === "production";
 const whiteList = ["https://takeoutbook.kr", "http://localhost:3000"];
 
+// origin: function (origin, cb) {
+//   if (whiteList.indexOf(origin) !== -1) {
+//     cb(null, true);
+//   } else {
+//     cb(new Error("NOT Allowed ORIGIN"));
+//   }
+// },
 const corsOpt = {
-  origin: function (origin, cb) {
-    if (whiteList.indexOf(origin) !== -1) {
-      cb(null, true);
-    } else {
-      cb(new Error("NOT Allowed ORIGIN"));
-    }
-  },
+  origin: "https://takeoutbook.kr",
   credentials: true,
 };
-app.set("trust proxy");
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(cors(corsOpt));
 
