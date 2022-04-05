@@ -1,49 +1,53 @@
 const express = require("express");
-// const redis = require("redis");
+const dotenv = require("dotenv");
+// const { createClient } = require("redis");
 const router = express.Router();
 const models = require("../models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-// const connectRedis = require("connect-redis");
-// const RedisStore = connectRedis(session);
-
-// const redisClient1 = redis.createClient({
-//   url: "redis://:p7fade2cb9ca46db931204b0f81286740738b744fd19fcf077010a3d79b6ebe01@ec2-44-196-70-155.compute-1.amazonaws.com:27729",
-// });
-
-// const redisStoreInfo = {
-//   logErrors: true,
-//   client: redisClient1,
-// };
+// const RedisStore = require("connect-redis")(session);
 
 const prod = process.env.NODE_ENV === "production";
+dotenv.config();
+
+// const redisClient = createClient({
+//   url: `redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+//   password: process.env.REDIS_PASSWORD,
+// });
+// redisClient.connect();
 
 router.use(
   session({
     key: "TBOsession",
-    secret: "aaaserret",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    // store: new RedisStore({ client: redisClient }),
     cookie: {
-      sameSite: "none",
+      samesite: "none",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
+      path: "/",
     },
-    // store: new RedisStore(redisStoreInfo),
   })
 );
-router.use(cookieParser());
+router.use(cookieParser(process.env.COOKIE_SECRET));
 
 router.get("/createSession", (req, res) => {
   req.session.TBOsession = {
     result: "결과",
   };
-
-  req.session.save(() => {
-    console.log("TEST세션저장완료");
-    res.json({ msg: "=>TEST세션저장완료", session: req.session.TBOsession });
-  });
+  console.log("PROD: ", prod);
+  try {
+    req.session.save(() => {
+      console.log("dotenv TEST", process.env.COOKIE_SECRET);
+      console.log("TEST세션저장완료");
+      res.json({ msg: "=>TEST세션저장완료", session: req.session.TBOsession });
+    });
+  } catch {
+    res.json({ msg: "저장실패: test Session" });
+  }
 });
 
 //세션 저장의 문제인지 살펴 볼 필요가 있다... 로컬에서는 가능...

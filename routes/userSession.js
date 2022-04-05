@@ -1,14 +1,16 @@
 const express = require("express");
+const dotenv = require("dotenv");
 const router = express.Router();
 const models = require("../models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const prod = process.env.NODE_ENV === "production";
+dotenv.config();
 
 router.use(
   session({
     key: "member",
-    secret: "aaaserret",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: true,
 
@@ -16,19 +18,22 @@ router.use(
       // httpOnly: true,
       //HTTP 통신에서 javascript를 주입해서 쿠키의 정보를 얻으려 하는경우 탈취 X
       samesite: "none",
+      //로컬에서는 가능
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
+      path: "/",
       maxAge: 60 * 60 * 1000,
     },
   })
 );
-router.use(cookieParser());
+router.use(cookieParser(process.env.COOKIE_SECRET));
 
 //로그인한 유저 정보를 받아와 session 생성
 router.post("/create", (req, res) => {
   const body = req.body;
   const { user_id, password } = body;
   console.log("TEST: 로그인정보 전달 했나? ", body);
+
   models.User.findOne({
     where: {
       user_id,
