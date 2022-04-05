@@ -8,7 +8,7 @@ const models = require("./models");
 const router = require("./routes/index");
 dotenv.config();
 const prod = process.env.NODE_ENV === "production";
-const whiteList = [process.env.TBO_CLIENT_URL, "http://localhost:3000"];
+const whiteList = ["https://takeoutbook.kr", "http://localhost:3000"];
 
 const corsOpt = {
   origin: function (origin, cb) {
