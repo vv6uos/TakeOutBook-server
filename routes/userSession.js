@@ -17,12 +17,12 @@ router.use(
     cookie: {
       // httpOnly: true,
       //HTTP 통신에서 javascript를 주입해서 쿠키의 정보를 얻으려 하는경우 탈취 X
-      samesite: "none",
-      //로컬에서는 가능
+      samesite: "strict",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       path: "/",
       maxAge: 60 * 60 * 1000,
+      path: "/",
     },
   })
 );
