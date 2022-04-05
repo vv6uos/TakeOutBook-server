@@ -11,7 +11,13 @@ const prod = process.env.NODE_ENV === "production";
 const whiteList = [process.env.TBO_CLIENT_URL, "http://localhost:3000"];
 
 const corsOpt = {
-  origin: [whiteList],
+  origin: function (origin, cb) {
+    if (whiteList.indexOf(origin) !== -1) {
+      cb(null, true);
+    } else {
+      cb(new Error("NOT Allowed ORIGIN"));
+    }
+  },
   credentials: true,
 };
 app.set("trust proxy");
