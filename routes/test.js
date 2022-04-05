@@ -35,9 +35,11 @@ router.use(
 router.use(cookieParser(process.env.COOKIE_SECRET));
 
 router.get("/createSession", (req, res) => {
-  req.session.TBOsession = {
-    result: "결과",
-  };
+  req.session.regenerate(() => {
+    req.session.TBOsession = {
+      result: "FIRST_SESSION",
+    };
+  });
   console.log("PROD: ", prod);
   try {
     req.session.save(() => {
@@ -48,6 +50,19 @@ router.get("/createSession", (req, res) => {
   } catch {
     res.json({ msg: "저장실패: test Session" });
   }
+});
+
+router.get("/updateSession", (req, res) => {
+  console.log("업데이트_____세션");
+  req.session.reload(() => {
+    req.session.TBOsession = {
+      result: "SECOND_SESSION",
+    };
+  });
+  req.session.save(() => {
+    console.log("세션 업데이트 완료");
+    res.json({ msg: "=>TEST세션업데이트", session: req.session.TBOsession });
+  });
 });
 
 //세션 저장의 문제인지 살펴 볼 필요가 있다... 로컬에서는 가능...
