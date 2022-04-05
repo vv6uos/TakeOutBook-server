@@ -7,15 +7,8 @@ const router = require("./routes/index");
 
 const port = process.env.PORT || 8080;
 const prod = process.env.NODE_ENV === "production";
-const whiteList = ["https://takeoutbook.kr", "http://localhost:3000"];
 const corsOpt = {
-  origin: function (origin, cb) {
-    if (whiteList.indexOf(origin) !== -1) {
-      cb(null, true);
-    } else {
-      cb(new Error("NOT Allowed ORIGIN"));
-    }
-  },
+  origin: ["https://takeoutbook.kr", "http://localhost:3000"],
   credentials: true,
 };
 
