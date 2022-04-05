@@ -1,23 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const dotenv = require("dotenv");
 
 const port = process.env.PORT || 8080;
 const models = require("./models");
 const router = require("./routes/index");
-
-const whiteList = ["https://takeoutbook.kr", "http://localhost:3000"];
+dotenv.config();
+const whiteList = process.env.TBO_CLIENT_URL || "http://localhost:3000";
 
 const corsOpt = {
-  origin: function (origin, cb) {
-    if (whiteList.indexOf(origin) !== -1) {
-      cb(null, true);
-    } else {
-      cb(new Error("NOT Allowed ORIGIN"));
-    }
-  },
+  origin: [whiteList],
   credentials: true,
 };
+app.set("trust proxy");
 app.use(express.json());
 app.use(cors(corsOpt));
 
