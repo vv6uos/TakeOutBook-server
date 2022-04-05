@@ -22,7 +22,6 @@ router.use(
       domain: prod && ".takeoutbook.kr",
       path: "/",
       maxAge: 60 * 60 * 1000,
-      path: "/",
     },
   })
 );
