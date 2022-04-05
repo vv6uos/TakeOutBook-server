@@ -22,16 +22,14 @@ router.use(
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    proxy: true,
     // store: new RedisStore({ client: redisClient }),
     cookie: {
-      sameSite: "strict",
+      samesite: "strict",
       // secure: prod ? true : false,
-      secure: true,
-      //1.  Error: secret option required for sessions방지하기
       //prod가 현재 안먹히는것 같다
       // domain: prod && ".takeoutbook.kr",
-      domain: ".takeoutbook.kr",
+      secure: prod ? true : false,
+      domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,
       path: "/",
     },
