@@ -25,9 +25,6 @@ router.use(
     // store: new RedisStore({ client: redisClient }),
     cookie: {
       samesite: "strict",
-      // secure: prod ? true : false,
-      //prod가 현재 안먹히는것 같다
-      // domain: prod && ".takeoutbook.kr",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
       maxAge: 60 * 60 * 1000,

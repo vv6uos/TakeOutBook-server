@@ -15,8 +15,6 @@ router.use(
     saveUninitialized: true,
 
     cookie: {
-      // httpOnly: true,
-      //HTTP 통신에서 javascript를 주입해서 쿠키의 정보를 얻으려 하는경우 탈취 X
       samesite: "strict",
       secure: prod ? true : false,
       domain: prod && ".takeoutbook.kr",
