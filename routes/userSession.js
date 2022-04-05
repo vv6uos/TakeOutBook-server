@@ -40,12 +40,14 @@ router.post("/create", (req, res) => {
     .then((result) => {
       console.log("로그인 회원정보", result);
       const member = result.dataValues;
-      req.session.member = {
-        isLogin: true,
-        id: member.id,
-        name: member.user_name,
-        isSubscriber: member.isSubscriber,
-      };
+      req.session.reload(() => {
+        req.session.member = {
+          isLogin: true,
+          id: member.id,
+          name: member.user_name,
+          isSubscriber: member.isSubscriber,
+        };
+      });
 
       console.log("SESSION.LOGINDATA", req.session);
       req.session.save(() => {
