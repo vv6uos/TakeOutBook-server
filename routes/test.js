@@ -1,20 +1,13 @@
 const express = require("express");
 const dotenv = require("dotenv");
-// const { createClient } = require("redis");
 const router = express.Router();
 const models = require("../models");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-// const RedisStore = require("connect-redis")(session);
 
 const prod = process.env.NODE_ENV === "production";
 dotenv.config();
 
-// const redisClient = createClient({
-//   url: `redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-//   password: process.env.REDIS_PASSWORD,
-// });
-// redisClient.connect();
 
 router.use(
   session({
@@ -22,7 +15,6 @@ router.use(
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    // store: new RedisStore({ client: redisClient }),
     cookie: {
       samesite: "strict",
       secure: prod ? true : false,
