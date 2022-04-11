@@ -86,7 +86,6 @@ router.get("/", (req, res) => {
         })
         .catch((err) => {
           console.log("====>일치하는 User 없음");
-          console.log("/userSession NOT FOUND ID ");
           res.json({
             answer: false,
             msg: "USERSESSION ERROR MESSAGE: 세션아이디와 일치하는 아이디가 없습니다",
