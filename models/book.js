@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-  const book = sequelize.define(
+  const Book = sequelize.define(
     "Book",
     {
       name: {
@@ -36,5 +36,5 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
-  return book;
+  return Book;
 };

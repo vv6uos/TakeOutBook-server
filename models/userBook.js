@@ -1,5 +1,7 @@
+const { User, Book } = require(".");
+
 module.exports = function (sequelize, DataTypes) {
-  let userBook = sequelize.define(
+  let UserBook = sequelize.define(
     "UserBook",
     {
       rental_id: {
@@ -13,11 +15,19 @@ module.exports = function (sequelize, DataTypes) {
         filed: "fk_user_id",
         type: DataTypes.INTEGER(20),
         allowNull: false,
+        references: {
+          model: User,
+          key: "id",
+        },
       },
       fk_book_id: {
-        filed: "fk_user_id",
+        filed: "fk_book_id",
         type: DataTypes.INTEGER(20),
         allowNull: false,
+        references: {
+          model: Book,
+          key: "id",
+        },
       },
       rentAt: {
         type: DataTypes.DATE,
@@ -39,5 +49,5 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
-  return userBook;
+  return UserBook;
 };

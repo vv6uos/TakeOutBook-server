@@ -43,21 +43,27 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.user = require("./user")(sequelize, Sequelize);
-db.book = require("./book")(sequelize, Sequelize);
-db.userBook = require("./userBooks")(sequelize, Sequelize);
+db.User = require("./user")(sequelize, Sequelize);
+db.Book = require("./book")(sequelize, Sequelize);
+db.UserBook = require("./userBook")(sequelize, Sequelize);
 
-db.user.belongsToMany(db.book, {
-  through: db.userBook,
-  as: "ReadBooks",
-  foreignKey: "fk_user_id",
-  otherKey: "fk_book_id",
+db.Book.belongsToMany(db.User, {
+  through: db.UserBook,
+  as: "Readers",
+  //유저정보가 사라질시 해당하는 데이터들이 사라짐
+  foreignKey: "fk_book_id",
   onDelete: "cascade",
 });
-// db.book.belongsToMany(db.user, {
-//   through: "UserBooks",
-//   as: "Readers",
-//   foreignKey: "userId",
-// });
+db.User.belongsToMany(db.Book, {
+  through: db.UserBook,
+  foreignKey: "fk_user_id",
+  as: "ReadBooks",
+});
+
+db.User.hasMany(db.UserBook, { foreignKey: "fk_user_id", onDelete: "cascade" });
+db.UserBook.belongsTo(db.User, { foreignKey: "fk_user_id" });
+
+db.Book.hasMany(db.UserBook, { foreignKey: "fk_book_id" });
+db.UserBook.belongsTo(db.Book, { foreignKey: "fk_book_id" });
 
 module.exports = db;

@@ -26,12 +26,14 @@ app.listen(port, () => {
     ":  SERVER START..........................."
   );
   models.sequelize
-    .sync()
+    .sync({
+      // alter: true,
+    })
     .then(() => {
-      console.log(".............DB연결성공.................");
+      console.log(">>>>>>>>>DB연결성공...............");
     })
     .catch((err) => {
-      console.log("DB연결실패", err);
+      console.log(">>>>>>>>>DB연결실패...............", err);
       process.exit();
     });
 });

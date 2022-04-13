@@ -1,5 +1,6 @@
+
 module.exports = function (sequelize, DataTypes) {
-  let user = sequelize.define(
+  let User = sequelize.define(
     "User",
     {
       user_id: {
@@ -44,5 +45,7 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
-  return user;
+
+
+  return User;
 };
