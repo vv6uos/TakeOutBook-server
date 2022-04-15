@@ -73,4 +73,47 @@ router.get("/read/user/:userId", (req, res) => {
       });
     });
 });
+
+//책 반납 API : UserBook UPDATE[+returnAt],Book UPDATE[onRent:false]
+router.get("/update", (req, res) => {
+  const { userBookId, bookId } = req.query;
+  const now = Date.now();
+  console.log("GET/USERBOOKS/UPDATE REQUEST");
+  //UserBook returnAt 데이터 입력
+  UserBook.update(
+    {
+      retrunAt: new Date(now),
+    },
+    { where: { rental_id: userBookId } }
+  )
+    .then((result) => {
+      console.log(
+        "===>USERBOOKS UPDATE : userBookId [",
+        userBookId,
+        "] , bookId [",
+        bookId,
+        "]"
+      );
+      //Book 정보 변경
+      Book.update({ onRent: false }, { where: { id: bookId } })
+        .then((result) => {
+          console.log("====>BOOK 대여상태 변경완료");
+          res.json({ answer: true });
+        })
+        .catch((err) => {
+          console.log("====>BOOK 대여상태 변경 실패 ");
+          res.json({
+            answer: false,
+            msg: "USERBOOKS/UPDATE ERROR MESSAGE: 서버관리자에게 문의 부탁드립니다",
+          });
+        });
+    })
+    .catch((err) => {
+      console.log("===>USERBOOKS 데이터 수정 실패");
+      res.json({
+        answer: false,
+        msg: "USERBOOKS/UPDATE ERROR MESSAGE:  서버관리자에게 문의 부탁드립니다",
+      });
+    });
+});
 module.exports = router;
