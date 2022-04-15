@@ -2,20 +2,18 @@ const express = require("express");
 const { Book, User, UserBook } = require("../models");
 const router = express.Router();
 
-//회원이 책을 대여하면 UserBooks데이터 생성,해당 도서 데이터 컬럼 "onRent" 상태를 변경
+//회원의 책 대여 API : UserBook CREATE,Book UPDATE[onRent:true]
 router.get("/create", (req, res) => {
   const { userId, bookId } = req.query;
   const now = Date.now();
-  console.log(userId);
-  console.log(bookId);
   console.log("GET/USERBOOKS/CREATE REQUEST");
+  //UserBook 데이터 생성
   UserBook.create({
     rentAt: new Date(now),
     rentBy: new Date(now + 7 * 24 * 60 * 60 * 1000),
     fk_user_id: userId,
     fk_book_id: bookId,
   })
-    //결과 클라이언트에 전달
     .then((result) => {
       console.log(
         "===>USERBOOKS CREATE : userId [",
@@ -24,6 +22,7 @@ router.get("/create", (req, res) => {
         bookId,
         "]"
       );
+      //Book 정보 변경
       Book.update({ onRent: true }, { where: { id: bookId } })
         .then((result) => {
           console.log("====>BOOK 대여상태 변경완료");
@@ -46,6 +45,7 @@ router.get("/create", (req, res) => {
     });
 });
 
+//회원의 대여책 현황 : UserBook FIND(ALL), Book READ
 router.get("/read/user/:userId", (req, res) => {
   const { userId } = req.params;
   console.log("GET=USERBOOKS/READ REQUEST");
