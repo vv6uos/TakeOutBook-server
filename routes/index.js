@@ -8,8 +8,10 @@ const register = require("./register.js");
 const userSession = require("./userSession");
 const member = require("./member.js");
 const bestsellers = require("./bestsellers");
+const userBooks = require("./userBooks");
 
 router.use("/books", books);
+router.use("/userBooks", userBooks);
 router.use("/register", register);
 router.use("/member", member);
 router.use("/bestsellers", bestsellers);
