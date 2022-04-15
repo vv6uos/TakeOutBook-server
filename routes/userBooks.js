@@ -46,4 +46,31 @@ router.get("/create", (req, res) => {
     });
 });
 
+router.get("/read/user/:userId", (req, res) => {
+  const { userId } = req.params;
+  console.log("GET=USERBOOKS/READ REQUEST");
+  UserBook.findAll({
+    include: [
+      {
+        model: Book,
+        attributes: ["name", "imgURL", "onRent"],
+      },
+    ],
+    where: {
+      fk_user_id: userId,
+    },
+  })
+    .then((result) => {
+      console.log(`===>${userId}번 회원 대여현황 불러옴`);
+      res.send({ answer: true, result: result });
+    })
+    .catch((err) => {
+      console.log("===>일치하는 USERBOOK 데이터 없음", err);
+      res.json({
+        answer: false,
+        msg: "USERBOOKS READ ERROR MESSAGE: 회원의 대여 책 현황을 불러 올 수 없습니다",
+        err,
+      });
+    });
+});
 module.exports = router;
