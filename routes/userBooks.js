@@ -1,5 +1,5 @@
 const express = require("express");
-const { Book, User, UserBook } = require("../models");
+const { Book, User, UserBook, Sequelize } = require("../models");
 const router = express.Router();
 
 //회원의 책 대여 API : UserBook CREATE,Book UPDATE[onRent:true]
@@ -46,9 +46,10 @@ router.get("/create", (req, res) => {
 });
 
 //회원의 대여책 현황 : UserBook FIND(ALL), Book READ
-router.get("/read/user/:userId", (req, res) => {
+router.get("/read/user/:userId/onRent", (req, res) => {
   const { userId } = req.params;
-  console.log("GET=USERBOOKS/READ REQUEST");
+
+  console.log(`GET=USERBOOKS/READ/USER?${userId}/onRent REQUEST`);
   UserBook.findAll({
     include: [
       {
@@ -58,6 +59,7 @@ router.get("/read/user/:userId", (req, res) => {
     ],
     where: {
       fk_user_id: userId,
+      returnAt: null,
     },
   })
     .then((result) => {
@@ -74,26 +76,54 @@ router.get("/read/user/:userId", (req, res) => {
     });
 });
 
+//반납한 책 불러오는 API
+router.get("/read/user/:userId/returned", (req, res) => {
+  const { userId } = req.params;
+
+  console.log(`GET=USERBOOKS/READ/USER?${userId}/returned REQUEST`);
+  UserBook.findAll({
+    include: [
+      {
+        model: Book,
+        attributes: ["name", "imgURL", "onRent"],
+      },
+    ],
+    where: {
+      fk_user_id: userId,
+      //returnAt 데이터가 null이 아닌 경우
+      returnAt: { [Sequelize.Op.ne]: null },
+    },
+  })
+    .then((result) => {
+      console.log(`===>${userId}번 회원이 읽은 도서 불러옴`);
+      res.send({ answer: true, result: result });
+    })
+    .catch((err) => {
+      console.log("===>일치하는 USERBOOK 데이터 없음", err);
+      res.json({
+        answer: false,
+        msg: "USERBOOKS READ ERROR MESSAGE: 회원의 지난 대여 도서를 불러 올 수 없습니다",
+        err,
+      });
+    });
+});
+
 //책 반납 API : UserBook UPDATE[+returnAt],Book UPDATE[onRent:false]
 router.get("/update", (req, res) => {
   const { userBookId, bookId } = req.query;
   const now = Date.now();
-  console.log("GET/USERBOOKS/UPDATE REQUEST");
+  console.log(
+    `"GET/USERBOOKS/UPDATE?userBookId=${userBookId}&bookId=${bookId} REQUEST"`
+  );
   //UserBook returnAt 데이터 입력
   UserBook.update(
     {
-      retrunAt: new Date(now),
+      returnAt: new Date(now),
     },
     { where: { rental_id: userBookId } }
   )
     .then((result) => {
-      console.log(
-        "===>USERBOOKS UPDATE : userBookId [",
-        userBookId,
-        "] , bookId [",
-        bookId,
-        "]"
-      );
+      console.log("===>USERBOOK 변경", result);
       //Book 정보 변경
       Book.update({ onRent: false }, { where: { id: bookId } })
         .then((result) => {
