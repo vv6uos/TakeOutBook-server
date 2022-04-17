@@ -1,6 +1,8 @@
 const express = require("express");
-const { Book, User, UserBook, Sequelize } = require("../models");
 const router = express.Router();
+const models = require("../models");
+
+const { Book, UserBook, Sequelize } = models;
 
 //회원의 책 대여 API : UserBook CREATE,Book UPDATE[onRent:true]
 router.get("/create", (req, res) => {
