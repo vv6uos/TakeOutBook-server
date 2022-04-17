@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/create", (req, res) => {
   const { userId, bookId } = req.query;
   const now = Date.now();
-  console.log("GET/USERBOOKS/CREATE REQUEST");
+  console.log(`>>>GET=USERBOOKS/CREATE?userId=${userId}&bookId=${bookId}`);
   //UserBook 데이터 생성
   UserBook.create({
     rentAt: new Date(now),
@@ -15,21 +15,15 @@ router.get("/create", (req, res) => {
     fk_book_id: bookId,
   })
     .then((result) => {
-      console.log(
-        "===>USERBOOKS CREATE : userId [",
-        userId,
-        "] , bookId [",
-        bookId,
-        "]"
-      );
+      console.log(`===>USERBOOK 생성`);
       //Book 정보 변경
       Book.update({ onRent: true }, { where: { id: bookId } })
         .then((result) => {
-          console.log("====>BOOK 대여상태 변경완료");
+          console.log("====>>BOOK 대여상태 변경완료");
           res.json({ answer: true });
         })
         .catch((err) => {
-          console.log("====>BOOK 대여상태 변경 실패 ");
+          console.log("===>>BOOK 대여상태 변경 실패 ");
           res.json({
             answer: false,
             msg: "USERBOOKS/CREATE/BOOK ERROR MESSAGE: 서버관리자에게 문의 부탁드립니다",
@@ -37,7 +31,7 @@ router.get("/create", (req, res) => {
         });
     })
     .catch((err) => {
-      console.log("===>USERBOOKS 데이터 생성 실패");
+      console.log("====>>USERBOOKS 데이터 생성 실패");
       res.json({
         answer: false,
         msg: "USERBOOKS/CREATE ERROR MESSAGE:  서버관리자에게 문의 부탁드립니다",
@@ -49,7 +43,7 @@ router.get("/create", (req, res) => {
 router.get("/read/user/:userId/onRent", (req, res) => {
   const { userId } = req.params;
 
-  console.log(`GET=USERBOOKS/READ/USER?${userId}/onRent REQUEST`);
+  console.log(`>>> GET=USERBOOKS/READ/USER?${userId}/onRent REQUEST`);
   UserBook.findAll({
     include: [
       {
@@ -63,11 +57,11 @@ router.get("/read/user/:userId/onRent", (req, res) => {
     },
   })
     .then((result) => {
-      console.log(`===>${userId}번 회원 대여현황 불러옴`);
+      console.log(`===>>${userId}번 회원 대여현황 불러옴`);
       res.send({ answer: true, result: result });
     })
     .catch((err) => {
-      console.log("===>일치하는 USERBOOK 데이터 없음", err);
+      console.log("===>>일치하는 USERBOOK 데이터 없음", err);
       res.json({
         answer: false,
         msg: "USERBOOKS READ ERROR MESSAGE: 회원의 대여 책 현황을 불러 올 수 없습니다",
@@ -80,7 +74,7 @@ router.get("/read/user/:userId/onRent", (req, res) => {
 router.get("/read/user/:userId/returned", (req, res) => {
   const { userId } = req.params;
 
-  console.log(`GET=USERBOOKS/READ/USER?${userId}/returned REQUEST`);
+  console.log(`>>>GET=USERBOOKS/READ/USER?${userId}/returned REQUEST`);
   UserBook.findAll({
     include: [
       {
@@ -95,11 +89,11 @@ router.get("/read/user/:userId/returned", (req, res) => {
     },
   })
     .then((result) => {
-      console.log(`===>${userId}번 회원이 읽은 도서 불러옴`);
+      console.log(`===>>${userId}번 회원이 읽은 도서 불러옴`);
       res.send({ answer: true, result: result });
     })
     .catch((err) => {
-      console.log("===>일치하는 USERBOOK 데이터 없음", err);
+      console.log("===>>일치하는 USERBOOK 데이터 없음", err);
       res.json({
         answer: false,
         msg: "USERBOOKS READ ERROR MESSAGE: 회원의 지난 대여 도서를 불러 올 수 없습니다",
@@ -113,7 +107,7 @@ router.get("/update", (req, res) => {
   const { userBookId, bookId } = req.query;
   const now = Date.now();
   console.log(
-    `"GET/USERBOOKS/UPDATE?userBookId=${userBookId}&bookId=${bookId} REQUEST"`
+    `>>>GET/USERBOOKS/UPDATE?userBookId=${userBookId}&bookId=${bookId} REQUEST"`
   );
   //UserBook returnAt 데이터 입력
   UserBook.update(
@@ -127,11 +121,11 @@ router.get("/update", (req, res) => {
       //Book 정보 변경
       Book.update({ onRent: false }, { where: { id: bookId } })
         .then((result) => {
-          console.log("====>BOOK 대여상태 변경완료");
+          console.log("====>>BOOK 대여상태 변경완료");
           res.json({ answer: true });
         })
         .catch((err) => {
-          console.log("====>BOOK 대여상태 변경 실패 ");
+          console.log("====>>BOOK 대여상태 변경 실패 ");
           res.json({
             answer: false,
             msg: "USERBOOKS/UPDATE ERROR MESSAGE: 서버관리자에게 문의 부탁드립니다",
@@ -139,7 +133,7 @@ router.get("/update", (req, res) => {
         });
     })
     .catch((err) => {
-      console.log("===>USERBOOKS 데이터 수정 실패");
+      console.log("===>>USERBOOKS 데이터 수정 실패");
       res.json({
         answer: false,
         msg: "USERBOOKS/UPDATE ERROR MESSAGE:  서버관리자에게 문의 부탁드립니다",

@@ -29,7 +29,7 @@ router.use(cookieParser(process.env.COOKIE_SECRET));
 router.post("/create", (req, res) => {
   const body = req.body;
   const { user_id, password } = body;
-  console.log("POST=USER_SESSION/CREATE REQUEST");
+  console.log(">>>POST=USER_SESSION/CREATE REQUEST");
   models.User.findOne({
     where: {
       user_id,
@@ -46,22 +46,22 @@ router.post("/create", (req, res) => {
         isSubscriber: user.isSubscriber,
       };
       req.session.save(() => {
-        console.log("====>로그인 세션 저장", req.session.login);
+        console.log("====>>로그인 세션 저장", req.session.login);
         res.json({ answer: true, user: req.session.login });
       });
     })
     .catch((err) => {
-      console.log("===>가입된 회원없음");
+      console.log("===>>가입된 회원없음");
       res.json({ answer: false, msg: "아이디와 비밀번호 확인 부탁드립니다" });
     });
 });
 
 router.get("/", (req, res) => {
-  console.log("GET=USER_SESSION REQUEST");
+  console.log(">>>GET=USER_SESSION REQUEST");
   req.session.reload(() => {
     console.log("==>로그인 세션 불러오기");
     if (req.session.login) {
-      console.log("===>LOGIN_SESSION 있음", req.session.login);
+      console.log("===>LOGIN_SESSION USERID ? ", req.session.login.id);
       models.User.findOne({
         where: {
           id: req.session.login.id,
@@ -69,7 +69,7 @@ router.get("/", (req, res) => {
       })
         .then((result) => {
           const user = result.dataValues;
-          console.log("====>User  찾음", user);
+          console.log("====>User  찾음");
           req.session.login = {
             isLogin: true,
             id: req.session.login.id,
@@ -77,19 +77,22 @@ router.get("/", (req, res) => {
             isSubscriber: user.isSubscriber,
           };
           req.session.save(() => {
-            console.log("=====>LOGIN_SESSION 업데이트 완료", req.session.login);
+            console.log(
+              "=====>>LOGIN_SESSION 업데이트 완료",
+              req.session.login
+            );
             res.json({ answer: true, user: req.session.login });
           });
         })
         .catch((err) => {
-          console.log("====>일치하는 User 없음");
+          console.log("====>>일치하는 User 없음");
           res.json({
             answer: false,
             msg: "LOGIN_SESSION ERROR MESSAGE: 로그인 세션 아이디와 일치하는 아이디를 찾을 수  없습니다",
           });
         });
     } else {
-      console.log("===>LOGIN_SESSION 없음 ");
+      console.log("===>>LOGIN_SESSION 없음 ");
       res.json({
         answer: false,
         msg: "LOGIN_SESSION ERROR MESSAGE: 로그인 세션이 존재하지 않습니다.",
@@ -99,15 +102,15 @@ router.get("/", (req, res) => {
 });
 
 router.get("/delete", (req, res) => {
-  console.log("GET=LOGIN_SESSION/DELETE REQUEST");
+  console.log(">>>GET=LOGIN_SESSION/DELETE REQUEST");
   if (req.session.login) {
-    console.log("===>LOGIN_SESSION :", req.session.login);
+    console.log("===>LOGIN_SESSION USERID ? ", req.session.login.id);
     req.session.destroy(() => {
-      console.log("====>LOGIN_SESSION 삭제");
+      console.log("====>>LOGIN_SESSION 삭제");
       res.json({ answer: true, msg: "로그인 세션이 삭제 되었습니다" });
     });
   } else {
-    console.log("===>LOGIN_SESSION  없음");
+    console.log("===>>LOGIN_SESSION  없음");
     res.json({ answer: false, msg: "로그아웃이 실패했습니다" });
   }
 });
