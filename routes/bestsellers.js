@@ -7,16 +7,26 @@ const ALADIN_URL =
 const getBestSellers = async (request) => {
   let response;
   try {
+    console.log("===>ALADIN API 베스트셀러 데이터 요청");
     response = axios.get(ALADIN_URL);
   } catch (err) {
-    console.log("/aladin API AXIOS ERROR");
+    console.log("===>ALADIN API 베스트셀러 데이터 요청 실패");
   }
   return response;
 };
 router.get("/", (req, res) => {
-  getBestSellers(req).then((result) => {
-    res.json(result.data.item);
-  });
+  console.log(`>>>GET=BESTSELLERS REQUEST`);
+  getBestSellers(req)
+    .then((result) => {
+      console.log("====>>BESTSELLERS 불러오기 성공");
+      res.json({ answer: true, result: result.data.item });
+    })
+    .catch((err) => {
+      console.log("====>>BESTSELLERS 불러오기 실패");
+      res.json({
+        answer: false,
+      });
+    });
 });
 
 module.exports = router;

@@ -17,19 +17,18 @@ router.post("/create", (req, res) => {
     phoneNumber,
   })
     .then((result) => {
-      console.log("===>>회원 생성결과 : ", result);
+      console.log("===>>USER 생성결과 : ", result);
       res.json({ answer: true });
     })
     .catch((err) => {
-      console.log("===>>회원 생성 실패 ", err);
+      console.log("===>>USER 생성 실패 ", err);
       res.send({
         answer: false,
-        msg: "USER/CREATE ERROR MESSAGE: 서버관리자에게 문의 부탁드립니다.",
       });
     });
 });
 
-//회원 API
+//회원정보를 불러오는 API (임시)
 router.get("/read/:id", (req, res) => {
   const id = req.params.id;
   console.log(`>>>GET=USER:${id} READ REQUEST`);
@@ -47,7 +46,6 @@ router.get("/read/:id", (req, res) => {
       console.log("===>>일치하는 회원번호 없음");
       res.json({
         answer: false,
-        msg: "USER ERROR MESSAGE: 회원번호와 일치하는 회원이 없습니다",
       });
     });
 });
@@ -69,7 +67,6 @@ router.post("/update/subscribe", (req, res) => {
       console.log("===>> 유저 구독정보 변경 실패 : ", err);
       res.send({
         answer: false,
-        msg: "USER/UPDATE:subscribe ERROR MESSAGE: 서버관리자에게 문의 부탁드립니다.",
       });
     });
 });

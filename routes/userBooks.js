@@ -28,7 +28,6 @@ router.get("/create", (req, res) => {
           console.log("===>>BOOK 대여상태 변경 실패 ");
           res.json({
             answer: false,
-            msg: "USERBOOKS/CREATE/BOOK ERROR MESSAGE: 서버관리자에게 문의 부탁드립니다",
           });
         });
     })
@@ -66,8 +65,6 @@ router.get("/read/user/:userId/onRent", (req, res) => {
       console.log("===>>일치하는 USERBOOK 데이터 없음", err);
       res.json({
         answer: false,
-        msg: "USERBOOKS READ ERROR MESSAGE: 회원의 대여 책 현황을 불러 올 수 없습니다",
-        err,
       });
     });
 });
@@ -98,8 +95,6 @@ router.get("/read/user/:userId/returned", (req, res) => {
       console.log("===>>일치하는 USERBOOK 데이터 없음", err);
       res.json({
         answer: false,
-        msg: "USERBOOKS READ ERROR MESSAGE: 회원의 지난 대여 도서를 불러 올 수 없습니다",
-        err,
       });
     });
 });
@@ -130,7 +125,6 @@ router.get("/update", (req, res) => {
           console.log("====>>BOOK 대여상태 변경 실패 ");
           res.json({
             answer: false,
-            msg: "USERBOOKS/UPDATE ERROR MESSAGE: 서버관리자에게 문의 부탁드립니다",
           });
         });
     })
@@ -138,7 +132,6 @@ router.get("/update", (req, res) => {
       console.log("===>>USERBOOKS 데이터 수정 실패");
       res.json({
         answer: false,
-        msg: "USERBOOKS/UPDATE ERROR MESSAGE:  서버관리자에게 문의 부탁드립니다",
       });
     });
 });
