@@ -26,13 +26,12 @@ router.use(
 router.use(cookieParser(process.env.COOKIE_SECRET));
 
 //로그인한 유저 정보를 받아와 session 생성
-router.post("/create", (req, res) => {
-  const body = req.body;
-  const { user_id, password } = body;
+router.get("/create", (req, res) => {
+  const { userId, password } = req.query;
   console.log(">>>POST=USER_SESSION/CREATE REQUEST");
   models.User.findOne({
     where: {
-      user_id,
+      user_id: userId,
       password,
     },
   })
