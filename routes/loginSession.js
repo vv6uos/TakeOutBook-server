@@ -26,8 +26,8 @@ router.use(
 router.use(cookieParser(process.env.COOKIE_SECRET));
 
 //로그인 하면 로그인세션 생성
-router.get("/create", (req, res) => {
-  const { userId, password } = req.query;
+router.post("/", (req, res) => {
+  const { userId, password } = req.body;
   console.log(">>>POST=USER_SESSION/CREATE REQUEST");
   models.User.findOne({
     where: {
@@ -100,7 +100,7 @@ router.get("/", (req, res) => {
 });
 
 //로그인세션 삭제
-router.get("/delete", (req, res) => {
+router.get(`/out`, (req, res) => {
   console.log(">>>GET=LOGIN_SESSION/DELETE REQUEST");
   if (req.session.login) {
     console.log("===>LOGIN_SESSION USERID ? ", req.session.login.id);

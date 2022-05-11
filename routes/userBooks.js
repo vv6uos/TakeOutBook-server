@@ -5,7 +5,7 @@ const models = require("../models");
 const { Book, UserBook, Sequelize } = models;
 
 //회원의 책 대여 API : UserBook CREATE,Book UPDATE[onRent:true]
-router.get("/create", (req, res) => {
+router.get("/", (req, res) => {
   const { userId, bookId } = req.query;
   const now = Date.now();
   console.log(`>>>GET=USERBOOKS/CREATE?userId=${userId}&bookId=${bookId}`);
@@ -41,7 +41,7 @@ router.get("/create", (req, res) => {
 });
 
 //회원의 대여책 현황 : UserBook FIND(ALL), Book READ
-router.get("/read/user/:userId/onRent", (req, res) => {
+router.get("/:userId/onRent", (req, res) => {
   const { userId } = req.params;
 
   console.log(`>>> GET=USERBOOKS/READ/USER?${userId}/onRent REQUEST`);
@@ -70,7 +70,7 @@ router.get("/read/user/:userId/onRent", (req, res) => {
 });
 
 //반납한 책 불러오는 API
-router.get("/read/user/:userId/returned", (req, res) => {
+router.get("/:userId/returned", (req, res) => {
   const { userId } = req.params;
 
   console.log(`>>>GET=USERBOOKS/READ/USER?${userId}/returned REQUEST`);
@@ -100,8 +100,8 @@ router.get("/read/user/:userId/returned", (req, res) => {
 });
 
 //책 반납 API : UserBook UPDATE[+returnAt],Book UPDATE[onRent:false]
-router.get("/update", (req, res) => {
-  const { userBookId, bookId } = req.query;
+router.get("/:userBookId/:bookId", (req, res) => {
+  const { userBookId, bookId } = req.params;
   const now = Date.now();
   console.log(
     `>>>GET/USERBOOKS/UPDATE?userBookId=${userBookId}&bookId=${bookId} REQUEST"`

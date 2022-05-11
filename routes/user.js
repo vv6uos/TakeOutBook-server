@@ -4,7 +4,7 @@ const models = require("../models");
 
 const { User } = models;
 
-router.post("/create", (req, res) => {
+router.post("/", (req, res) => {
   const body = req.body;
   const { user_id, password, user_name, email, address, phoneNumber } = body;
   console.log(`>>>POST=USER/CREATE`);
@@ -29,7 +29,7 @@ router.post("/create", (req, res) => {
 });
 
 //회원정보를 불러오는 API (임시)
-router.get("/read/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const id = req.params.id;
   console.log(`>>>GET=USER:${id} READ REQUEST`);
   User.findOne({
@@ -51,14 +51,11 @@ router.get("/read/:id", (req, res) => {
 });
 
 // 유저의 구독상태를 변경하는 API
-router.post("/update/subscribe", (req, res) => {
-  const body = req.body;
-  const { userId, subscribeStatusToChange } = body;
-  console.log(`>>>POST=USER/UPDATE/SUBSCRIBE?userId=${userId}`);
-  User.update(
-    { isSubscriber: subscribeStatusToChange },
-    { where: { id: userId } }
-  )
+router.post("/:id/subscribe", (req, res) => {
+  const id = req.params.id;
+  const { subscribeStatusToChange } = req.body;
+  console.log(`>>>POST=USER/UPDATE/SUBSCRIBE?userId=${id}`);
+  User.update({ isSubscriber: subscribeStatusToChange }, { where: { id } })
     .then((result) => {
       console.log(`===>> 유저구독정보 변경 완료`);
       res.json({ answer: true });
@@ -68,27 +65,6 @@ router.post("/update/subscribe", (req, res) => {
       res.send({
         answer: false,
       });
-    });
-});
-
-router.post("/read/userId", (req, res) => {
-  const body = req.body;
-  const { user_id } = body;
-  console.log(`>>>POST=USER/READ/USERID?${user_id}`);
-  User.findOne({
-    where: {
-      user_id,
-    },
-  })
-    .then((result) => {
-      //result null방지
-      const user = result.dataValues;
-      console.log("===>>ID 일치하는 USER 있음", result);
-      res.send({ answer: true });
-    })
-    .catch((err) => {
-      console.log("===>>ID 일치하는 USER 찾기 실패");
-      res.send({ answer: false });
     });
 });
 
